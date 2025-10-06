@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Evidencia de la Ingesta de Información</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background-color: #f4f4f4; }
+    .WebSocket { background-color: #cce5ff; }
+    .GraphQL { background-color: #d4edda; }
+    .BatchLoad { background-color: #fff3cd; }
+    .ALERTA { color: red; font-weight: bold; }
+    #rick-morty div { display: inline-block; margin: 10px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <h1>Evidencia de la Ingesta de Información</h1>
+
+  <h2>Tabla de Ingesta</h2>
+  <button onclick="cargarDatos('lambda.json')">Cargar Lambda</button>
+  <button onclick="cargarDatos('kappa.json')">Cargar Kappa</button>
+
+  <table id="tabla-ingesta">
+    <thead>
+      <tr>
+        <th>Fuente</th>
+        <th>Tipo</th>
+        <th>Tiempo de Respuesta (ms)</th>
+        <th>Memoria (MB)</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Datos se cargarán aquí -->
+    </tbody>
+  </table>
+
+  <h2>Rick & Morty API</h2>
+  <div id="rick-morty"></div>
+
+  <script src="ingesta.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

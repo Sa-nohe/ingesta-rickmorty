@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "Flujo A→B",
+    "tipo": "WebSocket",
+    "tiempoRespuesta": 120,
+    "memoria": 50,
+    "estado": "OK"
+  },
+  {
+    "nombre": "Flujo B→C",
+    "tipo": "GraphQL",
+    "tiempoRespuesta": 250,
+    "memoria": 80,
+    "estado": "ALERTA"
+  }
+]
+
