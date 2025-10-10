@@ -3,46 +3,47 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Evidencia de la Ingesta de Información</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background-color: #f4f4f4; }
-    .WebSocket { background-color: #cce5ff; }
-    .GraphQL { background-color: #d4edda; }
-    .BatchLoad { background-color: #fff3cd; }
-    .ALERTA { color: red; font-weight: bold; }
-    #rick-morty div { display: inline-block; margin: 10px; text-align: center; }
-  </style>
+  <title>Proyecto Rick & Morty + Arquitecturas</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Header -->
+  <header>
+    <h1>Proyecto Rick & Morty + Arquitecturas Lambda/Kappa</h1>
+  </header>
 
-  <h1>Evidencia de la Ingesta de Información</h1>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="tab-rm">Rick & Morty</button>
+    <button class="tab-btn" data-tab="tab-arch">Comparativa</button>
+  </div>
 
-  <h2>Tabla de Ingesta</h2>
-  <button onclick="cargarDatos('lambda.json')">Cargar Lambda</button>
-  <button onclick="cargarDatos('kappa.json')">Cargar Kappa</button>
+  <!-- Contenido Tab Rick & Morty -->
+  <div id="tab-rm" class="tab-content active">
+    <input type="text" id="searchInput" placeholder="Buscar personaje...">
+    <div id="characterContainer" class="cards"></div>
+  </div>
 
-  <table id="tabla-ingesta">
-    <thead>
-      <tr>
-        <th>Fuente</th>
-        <th>Tipo</th>
-        <th>Tiempo de Respuesta (ms)</th>
-        <th>Memoria (MB)</th>
-        <th>Estado</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Datos se cargarán aquí -->
-    </tbody>
-  </table>
+  <!-- Contenido Tab Comparativa -->
+  <div id="tab-arch" class="tab-content">
+    <button id="btnComparativa">Mostrar Comparativa Lambda vs Kappa</button>
+    <div id="cardsContainer" class="cards"></div>
+  </div>
 
-  <h2>Rick & Morty API</h2>
-  <div id="rick-morty"></div>
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <img id="modalImg" src="" alt="">
+      <h2 id="modalName"></h2>
+      <p id="modalStatus"></p>
+      <p id="modalSpecies"></p>
+      <p id="modalGender"></p>
+      <p id="modalLocation"></p>
+    </div>
+  </div>
 
-  <script src="ingesta.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
 
