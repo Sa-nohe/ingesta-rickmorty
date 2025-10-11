@@ -1,0 +1,17 @@
+[
+  {
+    "nombre": "Flujo A→B",
+    "tipo": "Batch Load",
+    "tiempoRespuesta": 500,
+    "memoria": 100,
+    "estado": "OK"
+  },
+  {
+    "nombre": "Flujo B→C",
+    "tipo": "Batch Load",
+    "tiempoRespuesta": 700,
+    "memoria": 150,
+    "estado": "ALERTA"
+  }
+]
+
