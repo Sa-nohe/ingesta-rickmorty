@@ -43,68 +43,55 @@
     </div>
   </div>
 
-  <h2> Benchmark de Arquitecturas</h2>
-<p>Comparativa de rendimiento entre Lambda, Kappa y API.</p>
+  <h2>Benchmark de Arquitecturas</h2>
+  <p>Comparativa de rendimiento entre Lambda, Kappa y API.</p>
 
-<table border="1" style="border-collapse: collapse; text-align:center; width:80%;">
-  <thead>
-    <tr>
-      <th>Arquitectura</th>
-      <th>Tiempo de respuesta (ms)</th>
-      <th>Tamaño de datos (bytes)</th>
-    </tr>
-  </thead>
-  <tbody id="tabla-benchmark"></tbody>
-</table>
+  <table border="1" style="border-collapse: collapse; text-align:center; width:80%;">
+    <thead>
+      <tr>
+        <th>Arquitectura</th>
+        <th>Tiempo de respuesta (ms)</th>
+        <th>Tamaño de datos (bytes)</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-benchmark"></tbody>
+  </table>
 
-<!-- ------------------ SQL en el navegador (sql.js) ------------------ -->
-<h2> Consultas SQL</h2>
-<p>Puedes escribir tu propia consulta o usar los ejemplos:</p>
+  <!-- SQL en el navegador (sql.js) -->
+  <h2>Consultas SQL</h2>
+  <p>Puedes escribir tu propia consulta o usar los ejemplos:</p>
 
-<textarea id="queryInput" placeholder="Escribe tu consulta SQL aquí..."></textarea>
+  <textarea id="queryInput" placeholder="Escribe tu consulta SQL aquí..."></textarea>
 
-<div>
-  <button id="btnRunSql">▶ Ejecutar consulta</button>
-  <button id="btnLoadData"> Cargar datos</button>
-</div>
+  <div>
+    <button id="btnRunSql">▶ Ejecutar consulta</button>
+    <button id="btnLoadData">Cargar datos</button>
+  </div>
 
-<!-- Botones de ejemplo -->
-<div id="sqlExamples" style="margin-top: 10px;">
- <button class="sql-example" data-query="SELECT * FROM personajes LIMIT 5;">Ver los primeros 5</button>
+  <!-- Botones de ejemplo -->
+  <div id="sqlExamples" style="margin-top: 10px;">
+    <button class="sql-example" data-query="SELECT * FROM personajes LIMIT 5;">Ver los primeros 5</button>
+    <button class="sql-example" data-query="SELECT nombre, especie, estado, imagen FROM personajes WHERE especie='Human' AND estado='Alive' LIMIT 10;">Humanos vivos</button>
+    <button class="sql-example" data-query="SELECT nombre, genero, estado, imagen FROM personajes WHERE genero='Female' AND estado='Alive' LIMIT 10;">Mujeres vivas</button>
+    <button class="sql-example" data-query="SELECT nombre, especie, estado, imagen FROM personajes WHERE estado='Dead' LIMIT 10;">Personajes muertos</button>
+    <button class="sql-example" data-query="SELECT nombre, especie, ubicacion, imagen FROM personajes WHERE ubicacion LIKE '%Earth%' LIMIT 10;">Personajes en la Tierra</button>
+  </div>
 
-<button class="sql-example" data-query="SELECT nombre, especie, estado, imagen FROM personajes WHERE especie='Human' AND estado='Alive' LIMIT 10;">Humanos vivos</button>
+  <div id="sqlStatus"></div>
+  <div id="sqlResults"></div>
 
-<button class="sql-example" data-query="SELECT nombre, genero, estado, imagen FROM personajes WHERE genero='Female' AND estado='Alive' LIMIT 10;">Mujeres vivas</button>
+  <h3>Visualización del Benchmark</h3>
+  <canvas id="graficoBenchmark" width="600" height="300"></canvas>
 
-<button class="sql-example" data-query="SELECT nombre, especie, estado, imagen FROM personajes WHERE estado='Dead' LIMIT 10;">Personajes muertos</button>
+  <!-- Cargar sql.js y script de SQL solo UNA vez -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+  <script src="sqlQuery.js"></script>
 
-<button class="sql-example" data-query="SELECT nombre, especie, ubicacion, imagen FROM personajes WHERE ubicacion LIKE '%Earth%' LIMIT 10;">Personajes en la Tierra</button>
-
-</div>
-
-<div id="sqlStatus"></div>
-<div id="sqlResults"></div>
-
-
-<!-- sql.js (SQLite compiled to WASM) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
-<script src="sqlQuery.js"></script>
-<!-- ------------------------------------------------------------------- -->
-
-
-<h3> Visualización del Benchmark</h3>
-<canvas id="graficoBenchmark" width="600" height="300"></canvas>
-
-<!-- sql.js (SQLite compiled to WASM) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
-<script src="sqlQuery.js"></script>
-<!-- ------------------------------------------------------------------- -->
-
-
-<script src="benchmarkWeb.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <!-- Benchmark y otras dependencias -->
+  <script src="benchmarkWeb.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
- 
 </body>
 </html>
+
+
