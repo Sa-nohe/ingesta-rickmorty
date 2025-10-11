@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Proyecto Rick & Morty + Arquitecturas</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Header -->
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <h2>📊 Benchmark de Arquitecturas</h2>
+  <h2> Benchmark de Arquitecturas</h2>
 <p>Comparativa de rendimiento entre Lambda, Kappa y API.</p>
 
 <table border="1" style="border-collapse: collapse; text-align:center; width:80%;">
@@ -57,9 +57,14 @@
   <tbody id="tabla-benchmark"></tbody>
 </table>
 
-<script src="benchmarkWeb.js"></script>
+<h3> Visualización del Benchmark</h3>
+<canvas id="graficoBenchmark" width="600" height="300"></canvas>
 
+
+<script src="benchmarkWeb.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script src="app.js"></script>
+ 
 </body>
 </html>
