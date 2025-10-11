@@ -58,16 +58,33 @@
 </table>
 
 <!-- ------------------ SQL en el navegador (sql.js) ------------------ -->
-<h2>🧾 Consultas SQL (SQLite in-memory)</h2>
-<p>Escribe una consulta SQL sobre la tabla <code>personajes</code> y presiona <strong>Ejecutar</strong>.</p>
+<h2> Consultas SQL</h2>
+<p>Puedes escribir tu propia consulta o usar los ejemplos:</p>
 
-<textarea id="sqlInput" rows="4" style="width:80%; max-width:900px;" placeholder="Ejemplo: SELECT name, species, status FROM personajes WHERE species='Human' LIMIT 10;"></textarea>
-<br/>
-<button id="btnRunSql">Ejecutar SQL</button>
-<button id="btnLoadData">(Re)Cargar datos desde API</button>
-<span id="sqlStatus" style="margin-left:10px;color:#555"></span>
+<textarea id="queryInput" placeholder="Escribe tu consulta SQL aquí..."></textarea>
 
-<div id="sqlResults" style="margin-top:20px; width:95%; overflow:auto;"></div>
+<div>
+  <button id="btnRunSql">▶ Ejecutar consulta</button>
+  <button id="btnLoadData"> Cargar datos</button>
+</div>
+
+<!-- Botones de ejemplo -->
+<div id="sqlExamples" style="margin-top: 10px;">
+ <button class="sql-example" data-query="SELECT * FROM personajes LIMIT 5;">Ver los primeros 5</button>
+
+<button class="sql-example" data-query="SELECT nombre, especie, estado, imagen FROM personajes WHERE especie='Human' AND estado='Alive' LIMIT 10;">Humanos vivos</button>
+
+<button class="sql-example" data-query="SELECT nombre, genero, estado, imagen FROM personajes WHERE genero='Female' AND estado='Alive' LIMIT 10;">Mujeres vivas</button>
+
+<button class="sql-example" data-query="SELECT nombre, especie, estado, imagen FROM personajes WHERE estado='Dead' LIMIT 10;">Personajes muertos</button>
+
+<button class="sql-example" data-query="SELECT nombre, especie, ubicacion, imagen FROM personajes WHERE ubicacion LIKE '%Earth%' LIMIT 10;">Personajes en la Tierra</button>
+
+</div>
+
+<div id="sqlStatus"></div>
+<div id="sqlResults"></div>
+
 
 <!-- sql.js (SQLite compiled to WASM) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>

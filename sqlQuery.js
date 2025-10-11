@@ -1,147 +1,133 @@
 // sqlQuery.js
-// Usa sql.js para crear una DB SQLite en memoria y poblarla con personajes de la API
-// Requiere sql-wasm.js cargado antes de este archivo.
+// Módulo para consultas SQL usando sql.js (SQLite en memoria)
+// Carga datos desde la API de Rick and Morty y permite ejecutar consultas SQL desde el navegador
 
-let SQL;               // el módulo sql.js
-let db;                // la base de datos en memoria
+let db;
+let SQL;
 
-const STATUS_EL = document.getElementById("sqlStatus");
-const RESULTS_EL = document.getElementById("sqlResults");
-const INPUT_EL = document.getElementById("sqlInput");
-const BTN_RUN = document.getElementById("btnRunSql");
-const BTN_LOAD = document.getElementById("btnLoadData");
+// Inicializa la base de datos SQLite
+async function initDatabase() {
+  const sqlPromise = window.initSqlJs({
+    locateFile: (file) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`,
+  });
 
-async function initSqlJsAndDb() {
-  STATUS_EL.textContent = "Inicializando motor SQL (WASM)...";
-  SQL = await initSqlJs({ locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}` });
+  SQL = await sqlPromise;
   db = new SQL.Database();
-  crearEsquema();
-  STATUS_EL.textContent = "Base de datos lista. Carga datos con (Re)Cargar datos desde API.";
+  document.getElementById("sqlStatus").innerText = "✅ Base de datos SQLite lista.";
 }
 
-function crearEsquema() {
-  const ddl = `
+// Cargar datos desde la API de Rick and Morty
+async function loadData() {
+  document.getElementById("sqlStatus").innerText = "Cargando datos desde la API...";
+  const response = await fetch("https://rickandmortyapi.com/api/character");
+  const data = await response.json();
+
+  db.run(`DROP TABLE IF EXISTS personajes;`);
+  db.run(`
     CREATE TABLE IF NOT EXISTS personajes (
       id INTEGER PRIMARY KEY,
-      name TEXT,
-      status TEXT,
-      species TEXT,
-      type TEXT,
-      gender TEXT,
-      origin_name TEXT,
-      location_name TEXT,
-      image TEXT,
-      created TEXT
+      nombre TEXT,
+      estado TEXT,
+      especie TEXT,
+      tipo TEXT,
+      genero TEXT,
+      origen TEXT,
+      ubicacion TEXT,
+      imagen TEXT,
+      creado TEXT
     );
-    DELETE FROM personajes; -- limpiar si existe
-  `;
-  db.run(ddl);
-}
+  `);
 
-async function fetchAllCharacters() {
-  STATUS_EL.textContent = "Descargando personajes desde la API...";
-  // La API de Rick & Morty paga paginada; hacemos requests secuenciales hasta agotar páginas.
-  let url = "https://rickandmortyapi.com/api/character";
-  let count = 0;
-  try {
-    while (url) {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
-      const results = json.results || [];
-      // Insertar cada personaje en la DB
-      const insertStmt = db.prepare(
-        `INSERT OR REPLACE INTO personajes (id, name, status, species, type, gender, origin_name, location_name, image, created) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
-      );
-      db.run("BEGIN TRANSACTION;");
-      for (const p of results) {
-        insertStmt.run([
-          p.id,
-          p.name,
-          p.status,
-          p.species,
-          p.type,
-          p.gender,
-          p.origin?.name || null,
-          p.location?.name || null,
-          p.image,
-          p.created
-        ]);
-        count++;
-      }
-      db.run("COMMIT;");
-      insertStmt.free();
-      // siguiente página
-      url = json.info && json.info.next ? json.info.next : null;
-    }
-    STATUS_EL.textContent = `Datos cargados: ${count} personajes. Puedes ejecutar consultas.`;
-  } catch (err) {
-    STATUS_EL.textContent = `Error al descargar datos: ${err.message}`;
-    console.error(err);
+  const insertStmt = db.prepare(`
+    INSERT OR REPLACE INTO personajes 
+    (id, nombre, estado, especie, tipo, genero, origen, ubicacion, imagen, creado)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+  `);
+
+  for (const p of data.results) {
+    insertStmt.run([
+      p.id,
+      p.name,
+      p.status,
+      p.species,
+      p.type,
+      p.gender,
+      p.origin?.name || null,
+      p.location?.name || null,
+      p.image,
+      p.created
+    ]);
   }
+
+  insertStmt.free();
+  document.getElementById("sqlStatus").innerText = "✅ Datos cargados correctamente.";
 }
 
-function runSql(query) {
-  try {
-    const start = performance.now();
-    const res = db.exec(query); // devuelve array con resultado(s)
-    const end = performance.now();
-    const duration = (end - start).toFixed(2);
-    if (!res || res.length === 0) {
-      RESULTS_EL.innerHTML = `<div>Consulta ejecutada en ${duration} ms. (sin filas devueltas)</div>`;
-      return;
-    }
-    // Solo manejamos el primer result set para simplicidad
-    const r = res[0];
-    renderResultAsTable(r.columns, r.values, duration);
-  } catch (err) {
-    RESULTS_EL.innerHTML = `<div style="color:#900">Error SQL: ${err.message}</div>`;
-  }
-}
-
-function renderResultAsTable(columns, values, durationMs) {
-  let html = `<div style="margin-bottom:8px;color:#444">Tiempo ejecución: ${durationMs} ms — Filas: ${values.length}</div>`;
-  html += `<table style="border-collapse:collapse; width:100%; max-width:1100px;">`;
-  // header
-  html += `<thead><tr>`;
-  for (const c of columns) {
-    html += `<th style="padding:8px;background:#1976d2;color:#fff;border:1px solid #ddd;text-align:left">${c}</th>`;
-  }
-  html += `</tr></thead>`;
-  // body
-  html += `<tbody>`;
-  for (const row of values) {
-    html += `<tr>`;
-    for (const cell of row) {
-      html += `<td style="padding:8px;border:1px solid #eee">${cell === null ? "" : escapeHtml(String(cell))}</td>`;
-    }
-    html += `</tr>`;
-  }
-  html += `</tbody></table>`;
-  RESULTS_EL.innerHTML = html;
-}
-
-function escapeHtml(s) {
-  return s.replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-}
-
-// eventos UI
-BTN_RUN.addEventListener("click", () => {
-  const q = INPUT_EL.value.trim();
-  if (!q) {
-    STATUS_EL.textContent = "Escribe una consulta SQL válida.";
+// Ejecutar consulta SQL escrita por el usuario
+function runSQL() {
+  const sql = document.getElementById("queryInput").value.trim(); // corregido
+  if (!sql) {
+    alert("Por favor, escribe una consulta SQL.");
     return;
   }
-  STATUS_EL.textContent = "Ejecutando consulta...";
-  runSql(q);
+
+  try {
+    const res = db.exec(sql);
+
+    if (res.length === 0) {
+      document.getElementById("sqlResults").innerHTML =
+        "<p>Consulta ejecutada correctamente (sin resultados).</p>";
+      return;
+    }
+
+    const result = res[0];
+    const columns = result.columns;
+    const values = result.values;
+
+    let html = "<table border='1' cellspacing='0' cellpadding='4'><tr>";
+    columns.forEach(col => (html += `<th>${col}</th>`));
+    html += "</tr>";
+
+    values.forEach(row => {
+  html += "<tr>";
+  row.forEach((cell, i) => {
+    const colName = columns[i].toLowerCase();
+
+    // Si la columna es "imagen" o contiene una URL de imagen, mostrar la imagen
+    if (colName.includes("imagen") || (typeof cell === "string" && cell.startsWith("https://"))) {
+      html += `<td><img src="${cell}" alt="imagen" width="80" height="80" style="border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2);"></td>`;
+    } else {
+      html += `<td>${cell}</td>`;
+    }
+  });
+  html += "</tr>";
 });
 
-BTN_LOAD.addEventListener("click", async () => {
-  crearEsquema(); // limpiar y crear
-  await fetchAllCharacters();
+    html += "</table>";
+
+    document.getElementById("sqlResults").innerHTML = html;
+  } catch (e) {
+    document.getElementById("sqlResults").innerHTML = `<p style="color:red;">Error: ${e.message}</p>`;
+  }
+}
+
+// Asignar eventos a botones principales
+document.addEventListener("DOMContentLoaded", async () => {
+  await initDatabase();
+
+  document.getElementById("btnLoadData").addEventListener("click", loadData);
+  document.getElementById("btnRunSql").addEventListener("click", runSQL);
 });
 
-// inicializar al cargar la página
-window.addEventListener("load", async () => {
-  await initSqlJsAndDb();
+// Botones de consultas de ejemplo
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("sql-example")) {
+    const query = e.target.getAttribute("data-query");
+    document.getElementById("queryInput").value = query; // corregido
+    runSQL();
+  }
 });
+
+
+
+

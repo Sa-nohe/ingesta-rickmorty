@@ -166,6 +166,94 @@ td {
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
+.sql-panel {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sql-panel textarea {
+  width: 80%;
+  margin: 10px 0;
+  padding: 10px;
+  font-family: monospace;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.sql-buttons {
+  margin-top: 20px;
+}
+
+.sql-buttons button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #c8a2c8;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.sql-buttons button:hover {
+  background-color: #b484b4;
+  transform: scale(1.05);
+}
+
+button {
+  background-color: #a175ff; /* Lila más oscuro para contraste */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  margin: 5px;
+}
+
+/* Efecto al pasar el mouse */
+button:hover {
+  background-color: #7c4dff;
+  transform: scale(1.05);
+}
+
+/* Efecto al hacer clic */
+button:active {
+  background-color: #5e35b1;
+  transform: scale(0.98);
+}
+
+/* --- Cuadro para consultas SQL --- */
+#queryInput {
+  width: 90%;               /* 🔹 Ocupa casi todo el ancho */
+  max-width: 800px;          /* 🔹 Más grande en pantallas amplias */
+  height: 40px;             /* 🔹 Aumenta la altura */
+  padding: 14px 18px;
+  font-size: 16px;
+  border: 2px solid #b388ff;
+  border-radius: 12px;
+  outline: none;
+  resize: none;              /* 🔹 Evita que el usuario cambie el tamaño manualmente */
+  margin: 20px auto;
+  display: block;
+  background-color: #f9f7ff; /* 🔹 Fondo suave */
+  box-shadow: 0 0 6px rgba(124, 77, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+#queryInput:focus {
+  border-color: #7c4dff;
+  box-shadow: 0 0 12px rgba(124, 77, 255, 0.5);
+  background-color: #fff;
+}
+
+
+
+
 #sqlResults table { border-radius:6px; overflow:hidden; background:white; box-shadow:0 3px 10px rgba(0,0,0,0.06); }
 #sqlResults th { background:#1976d2; color:white; text-align:left; padding:8px; }
 #sqlResults td { padding:8px; border-bottom:1px solid #f0f0f0; }
