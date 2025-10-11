@@ -165,3 +165,10 @@ td {
   padding: 15px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
+
+#sqlResults table { border-radius:6px; overflow:hidden; background:white; box-shadow:0 3px 10px rgba(0,0,0,0.06); }
+#sqlResults th { background:#1976d2; color:white; text-align:left; padding:8px; }
+#sqlResults td { padding:8px; border-bottom:1px solid #f0f0f0; }
+textarea#sqlInput { border-radius:6px; padding:8px; border:1px solid #ccc; margin-bottom:10px; }
+button#btnRunSql, button#btnLoadData { margin:6px 8px 6px 0; padding:8px 12px; border-radius:6px; border:none; background:#6a1b9a; color:white; cursor:pointer; }
+button#btnLoadData { background:#5c6bc0; }
