@@ -146,7 +146,7 @@
     if (btn) return btn;
     btn = document.createElement("button");
     btn.id = "btnRunBenchmark";
-    btn.innerText = "🔁 Re-ejecutar benchmark";
+    btn.innerText = " Re-ejecutar benchmark";
     btn.style.margin = "8px";
     // insertarlo encima de la tabla (si existe tabla)
     const tabla = document.querySelector("table");
