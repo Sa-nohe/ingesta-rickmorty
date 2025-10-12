@@ -1,0 +1,23 @@
+{
+  "personajes": [
+    {
+      "id": 1,
+      "nombre": "Rick Sanchez",
+      "estado": "Alive",
+      "especie": "Human",
+      "genero": "Male",
+      "ubicacion": "Earth",
+      "imagen": "https://rickandmortyapi.com/api/character/avatar/1.jpeg"
+    },
+    {
+      "id": 2,
+      "nombre": "Morty Smith",
+      "estado": "Alive",
+      "especie": "Human",
+      "genero": "Male",
+      "ubicacion": "Earth",
+      "imagen": "https://rickandmortyapi.com/api/character/avatar/2.jpeg"
+    }
+  ]
+}
+
